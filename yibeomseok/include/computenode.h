@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/msg.h>
 
 struct cpt_node {
   int data_fd;
   int size;
   int* datas;
+  int msgq_id[2];
 };
 
-struct cpt_node get_cpt_node(char* data_path, int k_size) {
+struct cpt_node get_cpt_node(char* data_path, int k_size, int* msgq_id) {
   struct cpt_node node;
   
   node.data_fd = open(data_path, O_RDONLY, 0644);
@@ -27,6 +29,10 @@ struct cpt_node get_cpt_node(char* data_path, int k_size) {
     }
   }
 
+  lseek(node.data_fd, 0, SEEK_SET);
+  node.msgq_id[0] = msgq_id[0];
+  node.msgq_id[1] = msgq_id[1];
+  
   return node;
 }
 
@@ -34,6 +40,7 @@ void close_cpt_node(struct cpt_node node) {
   free(node.datas);
   close(node.data_fd);
 }
+
 
 /**
  * 재구성
