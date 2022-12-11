@@ -11,7 +11,7 @@ int main()
   int n;
   int i;
   int count = 0;
-  data_fd = open("data3.dat", O_RDONLY, 0644);
+  data_fd = open("data1.dat", O_RDONLY, 0644);
 
   while ((n = read(data_fd, buf, 40)) > 0)
   {
