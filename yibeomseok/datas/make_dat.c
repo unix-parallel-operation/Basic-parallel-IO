@@ -15,7 +15,7 @@ int openData(int data_number)
 {
   int fd;
 
-  fd = open(data_names[data_number], O_CREAT|O_WRONLY, 0644);
+  fd = open(data_names[data_number], O_CREAT | O_WRONLY, 0644);
   if (fd == -1)
   {
     perror("open");
@@ -37,7 +37,7 @@ void fillData(int data_fd, int data_number, int k_size)
     buf[i] = start_number + (i * 4);
   }
 
-  if (write(data_fd, buf, k_size * 1024/4 * sizeof(int)) != k_size * 1024/4 * sizeof(int))
+  if (write(data_fd, buf, k_size * 1024 / 4 * sizeof(int)) != k_size * 1024 / 4 * sizeof(int))
   {
     perror("write");
     exit(1);
