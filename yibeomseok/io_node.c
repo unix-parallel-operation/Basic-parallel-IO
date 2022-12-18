@@ -74,20 +74,6 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-// int io_write(int fd, int *data, int byte_size)
-// {
-//   printf("io에서 256개 받고 쓰기 시작할 때 첫 정수 = %d\n\n", data[0]);
-//   int d_cnt = byte_size / 4;
-//   int i;
-//   int buf[1];
-//   for (i = 0; i < d_cnt; i++)
-//   {
-//     buf[0] = data[i];
-//     lseek(fd, data[i] * 4, SEEK_SET);
-//     write(fd, buf, sizeof(int));
-//   }
-// }
-
 int io_write(int fd, int *data, int byte_size)
 {
   int d_cnt = byte_size / 4;
@@ -101,9 +87,7 @@ int io_write(int fd, int *data, int byte_size)
   else
     st = (unit / sub * (sub / 2)) + (data[0] % 4);
   off_t start = lseek(fd, st * 4, SEEK_SET);
-  printf("io에서 256개 받고 쓰기 시작할 때 첫 정수 = %d\nstart = %d\n", data[0], (int)st);
-  printf("io에 offset = %d위치에 쓰며 될것임\n\n", (int)start);
-  
+
   for (i = 0; i < d_cnt; i++)
   {
     buf[0] = data[i];
