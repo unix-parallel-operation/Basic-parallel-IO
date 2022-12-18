@@ -16,11 +16,11 @@ struct msgbuf
 int main(int argc, char *argv[])
 {
   // 인자 제대로 전달 되었는지 확인용 포인터 쓰다가 전달 안 되는 경우가 있었음
-  int i;
-  for (i = 0; i <= 5; i++)
-  {
-    printf("[%s]\n", argv[i]);
-  }
+  // int i;
+  // for (i = 0; i <= 5; i++)
+  // {
+  //   printf("[%s]\n", argv[i]);
+  // }
 
   /* -------------------------start------------------------- */
   if (argc < 4)

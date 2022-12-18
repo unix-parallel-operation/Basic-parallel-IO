@@ -11,18 +11,21 @@
 #include <string.h>
 #include <sys/ipc.h>
 #include <sys/types.h>
+#include <sys/time.h>
 
 #define KEY_NUM_1 103861
 #define KEY_NUM_2 103862
 
 void set_cpt_argv(char *argv[], int data_num, int msgq_id[], char *k_size); /* k_size == 16 or 64*/
 void set_io_argv(char *argv[], char *msgq_id, char *k_size, char *recv_file_name);
-void start_io_node(int *msgq, char* k_size);
+void start_io_node(int *msgq, char *k_size);
 void start_cpt_node(int *msgq, char *k_size);
 
 // compute node size를 넣어주어야 하며 .dat 파일이 준비되어 있어야 함.
 int main(int argc, char *argv[])
 {
+  struct timeval stime;
+
   if (argc < 2)
   {
     perror("compute node size 16 or 64");
@@ -35,19 +38,25 @@ int main(int argc, char *argv[])
       msgget(KEY_NUM_1, IPC_CREAT | 0644),
       msgget(KEY_NUM_2, IPC_CREAT | 0644)};
   char *k_size = argv[1];
-  
+
+  gettimeofday(&stime, NULL);
+  printf("START::time : ");
+  printf("%ld %ld\n", stime.tv_sec, stime.tv_usec);
+
   /* start io node */
   start_io_node(msgq, k_size);
 
   /* start compute node */
   start_cpt_node(msgq, k_size);
 
+ 
+
   return 0;
 }
 
 void set_cpt_argv(char *argv[], int data_num, int msgq_id[], char *k_size) /* k_size == 16 or 64*/
 {
-  char path[20];
+  char path[22];
   char s_msgq_id_0[20], s_msgq_id_1[20];
   sprintf(path, "./datas/data%d.dat", data_num);
   sprintf(s_msgq_id_0, "%d", msgq_id[0]);
@@ -57,7 +66,7 @@ void set_cpt_argv(char *argv[], int data_num, int msgq_id[], char *k_size) /* k_
   argv[1] = path;
   argv[2] = s_msgq_id_0;
   argv[3] = s_msgq_id_1;
-  argv[4] = k_size; // 변경해줘야 함
+  argv[4] = k_size;
   argv[5] = NULL;
 }
 
@@ -70,7 +79,7 @@ void set_io_argv(char *argv[], char *msgq_id, char *k_size, char *recv_file_name
   argv[4] = NULL;
 }
 
-void start_io_node(int *msgq, char* k_size)
+void start_io_node(int *msgq, char *k_size)
 {
   int pid;
   char msgqid[20];

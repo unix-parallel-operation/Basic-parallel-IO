@@ -24,6 +24,8 @@ struct msgbuf
 /* 어떤 message queue에서 receive할 것인지 인자로 줘야 함 */
 int main(int argc, char *argv[])
 {
+  struct timeval etime;
+
   printf("[io_node start]\n");
   if (argc < 2)
   {
@@ -70,7 +72,10 @@ int main(int argc, char *argv[])
   }
 
   close(fd);
-  printf("[io_node end]\n");
+  printf("[io_node]\n");
+  printf("END::time : ");
+  gettimeofday(&etime, NULL);
+  printf("%ld %ld\n", etime.tv_sec, etime.tv_usec);
   return 0;
 }
 
